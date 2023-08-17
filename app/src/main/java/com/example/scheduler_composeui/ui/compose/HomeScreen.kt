@@ -1,4 +1,4 @@
-package com.example.scheduler_composeui.ui.register
+package com.example.scheduler_composeui.ui.compose
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -21,6 +21,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+
+
+
 
 
 @Composable
@@ -70,12 +73,12 @@ fun LoginSection(modifier: Modifier = Modifier){
     }
 }
 @Composable
-fun RegisterSecton(modifier: Modifier = Modifier){
+fun RegisterSecton(modifier: Modifier = Modifier ,onClick : () ->Unit){
     Column(modifier,
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center) {
         Text(text="아직 회원이 아니신가요?")
-        Button(onClick = { /*TODO*/ }) {
+        Button(onClick = onClick) {
             Text(text = "회원 가입")
         }
 
@@ -84,12 +87,13 @@ fun RegisterSecton(modifier: Modifier = Modifier){
 
 
 @Composable
-fun HomeScreen(modifier: Modifier){
+fun HomeScreen(modifier: Modifier , OnRegidterClicked : () -> Unit){
+
     Column(modifier = modifier.fillMaxSize()) {
         TopSection(modifier)
         LoginSection(modifier)
         Spacer(modifier = Modifier.padding(20.dp))
-        RegisterSecton(modifier)
+        RegisterSecton(modifier, OnRegidterClicked)
     }
 
 }
