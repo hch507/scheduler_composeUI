@@ -21,9 +21,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-
-
-
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.scheduler_composeui.ui.viewmodels.LoginViewmodel
 
 
 @Composable
@@ -42,7 +43,7 @@ fun TopSection(modifier: Modifier = Modifier) {
 }
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun LoginSection(modifier: Modifier = Modifier){
+fun LoginSection(modifier: Modifier = Modifier, viewmodel: LoginViewmodel = viewModel()){
     Column(
         modifier= modifier.padding(50.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -54,19 +55,21 @@ fun LoginSection(modifier: Modifier = Modifier){
         var id by remember { mutableStateOf("") }
         var pw by remember { mutableStateOf("") }
         OutlinedTextField(
-            value = "",
+            value = id,
             onValueChange = { id = it },
             label = { Text("아이디") }
         )
         OutlinedTextField(
-            value = "",
+            value = pw,
             onValueChange = { pw = it },
             label = { Text("비밀번호") }
 
         )
         Spacer(modifier.height(25.dp))
-        Button(onClick = {
-            /*TODO*/ } ,
+        Button(
+            onClick = {
+                viewmodel.Message(id,pw)
+            },
         ) {
             Text(text = "로그인")
         }
