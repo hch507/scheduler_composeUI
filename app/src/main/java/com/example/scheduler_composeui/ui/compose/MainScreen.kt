@@ -23,16 +23,15 @@ import androidx.compose.ui.tooling.preview.Preview
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainScreen(
-    modifier: Modifier=Modifier
+    modifier: Modifier,
+    openDrawer : () -> Unit
 ){
     Scaffold(
-
         topBar = {
             TopAppBar(
-
                 title = { Text(text = "MySchedule")},
                 navigationIcon = {
-                    IconButton(onClick = { /*TODO*/ }) {
+                    IconButton(onClick = openDrawer) {
                         Icon(imageVector = Icons.Default.Menu, contentDescription = "menu")
                     }
                 },
@@ -49,8 +48,8 @@ fun MainScreen(
 }
 
 
-@Preview(showBackground = true)
-@Composable
-fun PreviewMainScreen(){
-    MainScreen()
-}
+//@Preview(showBackground = true)
+//@Composable
+////fun PreviewMainScreen(){
+////    MainScreen()
+////}
