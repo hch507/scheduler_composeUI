@@ -5,5 +5,5 @@ import dagger.hilt.android.AndroidEntryPoint
 import dagger.hilt.android.HiltAndroidApp
 
 @HiltAndroidApp
-class SchedulerApp : Application() {
+class SchedulerMyApp : Application() {
 }
