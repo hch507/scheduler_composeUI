@@ -21,8 +21,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.scheduler_composeui.ui.viewmodels.LoginViewmodel
+import dagger.hilt.android.lifecycle.HiltViewModel
 
 
 @Composable
@@ -93,11 +94,12 @@ fun RegisterSecton(modifier: Modifier = Modifier ,onClick : () ->Unit){
 @Composable
 fun LoginScreen(modifier: Modifier,
                 OnRegidterClicked : () -> Unit,
-                OnLoginClicked : () -> Unit){
+                viewmodel: LoginViewmodel =hiltViewModel()
+                ){
 
     Column(modifier = modifier.fillMaxSize()) {
         TopSection(modifier)
-        LoginSection(modifier, OnLoginClicked)
+        LoginSection(modifier, onClick = { viewmodel.Message(userPw = "9809") })
         Spacer(modifier = Modifier.padding(20.dp))
         RegisterSecton(modifier, OnRegidterClicked)
     }

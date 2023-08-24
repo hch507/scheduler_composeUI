@@ -38,10 +38,11 @@ fun SchedulerApp(
             LoginScreen(modifier = modifier,
                         OnRegidterClicked = {
                             navActions.navigationToRegister()
-                        },
-                        OnLoginClicked = {
-                            navActions.navigationToMain()
                         }
+//                        OnLoginClicked = {
+//
+////                            navActions.navigationToMain()
+//                        }
             )
         }
         composable(route = SchedulerScreen.REGISTER.title){
