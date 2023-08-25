@@ -2,6 +2,7 @@ package com.example.scheduler_composeui.utils
 
 import android.graphics.Color
 import android.graphics.ColorFilter
+import android.util.Log
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -26,6 +27,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -36,64 +38,76 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.scheduler_composeui.NavigationAction
 import com.example.scheduler_composeui.R
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AppModalDrawer(
     drawerState: DrawerState,
-    onClick : () ->Unit,
+    navigationAction: NavigationAction,
+    coroutineScope: CoroutineScope = rememberCoroutineScope(),
     content:@Composable () -> Unit){
-//    ModalDrawerSheet(
-//        drawerShape = DrawerDefaults.shape
-//    ) {
         ModalNavigationDrawer(
-            modifier = Modifier.fillMaxSize(),
             drawerState = drawerState,
-
             drawerContent = {
-                ModalDrawerSheet(
-                    drawerShape = DrawerDefaults.shape
-                ) {
-                    NavigationDrawer(modifier = Modifier , onClick)
+                ModalDrawerSheet(modifier = Modifier) {
+                    NavigationDrawer(
+                        modifier=Modifier,
+                        naviToHome = {navigationAction.navigationToMain()},
+                        naviToSummary = {navigationAction.navigationToSummary()
+                            Log.d("hch", "-AppModalDrawer() called 이ㅡ")},
+                        closeDrawer = {coroutineScope.launch { drawerState.close() }})
                 }
+
+
 
             }
         ){
             content()
         }
- //   }
 
 
 }
 @Composable
 fun NavigationDrawer(
-    modifier:Modifier,
 
+    naviToHome : () ->Unit,
+    naviToSummary:()->Unit,
+    closeDrawer:()-> Unit,
+    modifier: Modifier
 ){
 
     Column(modifier = modifier.fillMaxSize()) {
-        DrawerHeader(modifier)
+        DrawerHeader()
         DrawerButton(
             painter = painterResource(id = R.drawable.ic_baseline_home_24),
-            action = { /*TODO*/ },
-            label = "Home",
-            modifier = modifier)
+            action = {
+                naviToHome()
+                closeDrawer()
+            },
+            label = "Home"
+            )
         DrawerButton(
             painter = painterResource(id = R.drawable.ic_baseline_app_registration_24),
-            action = { /*TODO*/ },
-            label = "캘린더",
-            modifier = modifier)
+            action = { },
+            label = "캘린더"
+            )
         DrawerButton(
             painter = painterResource(id = R.drawable.ic_baseline_article_24),
-            action = { onClick },
+            action = {
+                naviToSummary()
+                closeDrawer()
+            },
             label = "요약",
-            modifier = modifier)
+            )
     }
 }
 @Composable
-private fun DrawerHeader(modifier: Modifier) {
-    Surface(color = MaterialTheme.colorScheme.primary) {
+private fun DrawerHeader() {
+
         Column(
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
@@ -102,7 +116,7 @@ private fun DrawerHeader(modifier: Modifier) {
             Image(
                 painter = painterResource(id = R.drawable.baseline_person_24),
                 contentDescription = "Person",
-                modifier = modifier
+                modifier = Modifier
                     .padding(top = 16.dp, bottom = 16.dp)
                     .size(size = 100.dp)
                     .clip(shape = CircleShape),
@@ -116,21 +130,17 @@ private fun DrawerHeader(modifier: Modifier) {
             )
         }
 
-    }
-
-
 }
 @Composable
 private fun DrawerButton(
     painter: Painter,
     action : () ->Unit,
     label : String,
-    modifier:Modifier
+
 ){
     TextButton(
         onClick = action,
-        modifier = modifier
-            .fillMaxWidth()
+
     ){
         Row(
             horizontalArrangement = Arrangement.Start,
@@ -153,8 +163,8 @@ private fun DrawerButton(
 
 }
 
-@Preview(showBackground = true)
-@Composable
-fun PreviewDrawer(){
-    NavigationDrawer(Modifier.fillMaxWidth())
-}
+//@Preview(showBackground = true)
+//@Composable
+//fun PreviewDrawer(){
+//    NavigationDrawer(Modifier.fillMaxWidth(),)
+//}

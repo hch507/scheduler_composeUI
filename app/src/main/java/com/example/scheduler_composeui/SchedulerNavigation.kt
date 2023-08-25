@@ -1,5 +1,6 @@
 package com.example.scheduler_composeui
 
+import android.util.Log
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
@@ -23,5 +24,6 @@ class NavigationAction(val navController: NavHostController){
 
     fun navigationToSummary(){
         navController.navigate(SchedulerScreen.Summary.title)
+        Log.d("hch", "NavigationAction-navigationToSummary() called")
     }
 }

@@ -94,12 +94,13 @@ fun RegisterSecton(modifier: Modifier = Modifier ,onClick : () ->Unit){
 @Composable
 fun LoginScreen(modifier: Modifier,
                 OnRegidterClicked : () -> Unit,
+                OnLoginClicked : () ->Unit,
                 viewmodel: LoginViewmodel =hiltViewModel()
                 ){
 
     Column(modifier = modifier.fillMaxSize()) {
         TopSection(modifier)
-        LoginSection(modifier, onClick = { viewmodel.Message(userPw = "9809") })
+        LoginSection(modifier, OnLoginClicked)
         Spacer(modifier = Modifier.padding(20.dp))
         RegisterSecton(modifier, OnRegidterClicked)
     }

@@ -1,5 +1,6 @@
 package com.example.scheduler_composeui
 
+import android.util.Log
 import androidx.compose.material3.DrawerState
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -36,22 +37,19 @@ fun SchedulerApp(
     NavHost(navController = navController, startDestination =SchedulerScreen.LOGIN.title  ){
         composable(route = SchedulerScreen.LOGIN.title ){
 
-            LoginScreen(modifier = modifier,
-                        OnRegidterClicked = {
-                            navActions.navigationToRegister()
-                        }
-//                        OnLoginClicked = {
-//
-////                            navActions.navigationToMain()
-//                        }
+            LoginScreen(
+                modifier = modifier,
+                OnLoginClicked = {navActions.navigationToMain()},
+                OnRegidterClicked = {navActions.navigationToRegister()}
             )
+
         }
         composable(route = SchedulerScreen.REGISTER.title){
 
             registerScreen(modifier=modifier)
         }
         composable(route= SchedulerScreen.Main.title){
-            AppModalDrawer(drawerState = drawerState) {
+            AppModalDrawer(drawerState = drawerState,navActions) {
                 MainScreen(modifier=modifier, openDrawer = {
                      coroutineScope.launch { drawerState.open() }
                 })
@@ -59,8 +57,9 @@ fun SchedulerApp(
 
         }
         composable(route = SchedulerScreen.Summary.title){
-            AppModalDrawer(drawerState = drawerState) {
+            AppModalDrawer(drawerState = drawerState,navActions) {
                 summaryScreen(openDrawer = {
+                    Log.d("hch", "-SchedulerApp() called ")
                     coroutineScope.launch { drawerState.open() }
                 })
             }
