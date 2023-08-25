@@ -15,6 +15,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.scheduler_composeui.ui.compose.LoginScreen
 import com.example.scheduler_composeui.ui.compose.MainScreen
 import com.example.scheduler_composeui.ui.compose.registerScreen
+import com.example.scheduler_composeui.ui.compose.summaryScreen
 import com.example.scheduler_composeui.utils.AppModalDrawer
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -56,6 +57,13 @@ fun SchedulerApp(
                 })
         }
 
+        }
+        composable(route = SchedulerScreen.Summary.title){
+            AppModalDrawer(drawerState = drawerState) {
+                summaryScreen(openDrawer = {
+                    coroutineScope.launch { drawerState.open() }
+                })
+            }
         }
 
     }

@@ -42,6 +42,7 @@ import com.example.scheduler_composeui.R
 @Composable
 fun AppModalDrawer(
     drawerState: DrawerState,
+    onClick : () ->Unit,
     content:@Composable () -> Unit){
 //    ModalDrawerSheet(
 //        drawerShape = DrawerDefaults.shape
@@ -54,7 +55,7 @@ fun AppModalDrawer(
                 ModalDrawerSheet(
                     drawerShape = DrawerDefaults.shape
                 ) {
-                    NavigationDrawer(modifier = Modifier)
+                    NavigationDrawer(modifier = Modifier , onClick)
                 }
 
             }
@@ -66,7 +67,10 @@ fun AppModalDrawer(
 
 }
 @Composable
-fun NavigationDrawer(modifier:Modifier){
+fun NavigationDrawer(
+    modifier:Modifier,
+
+){
 
     Column(modifier = modifier.fillMaxSize()) {
         DrawerHeader(modifier)
@@ -82,7 +86,7 @@ fun NavigationDrawer(modifier:Modifier){
             modifier = modifier)
         DrawerButton(
             painter = painterResource(id = R.drawable.ic_baseline_article_24),
-            action = { /*TODO*/ },
+            action = { onClick },
             label = "요약",
             modifier = modifier)
     }

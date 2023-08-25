@@ -7,7 +7,8 @@ import androidx.navigation.compose.rememberNavController
 enum class SchedulerScreen(val title :String){
     LOGIN("LOGIN"),
     REGISTER("REGISTER"),
-    Main("Main")
+    Main("Main"),
+    Summary("Summary")
 }
 
 class NavigationAction(val navController: NavHostController){
@@ -17,6 +18,10 @@ class NavigationAction(val navController: NavHostController){
     }
 
     fun navigationToRegister(){
-        navController.navigate(SchedulerScreen.Main.title)
+        navController.navigate(SchedulerScreen.REGISTER.title)
+    }
+
+    fun navigationToSummary(){
+        navController.navigate(SchedulerScreen.Summary.title)
     }
 }
