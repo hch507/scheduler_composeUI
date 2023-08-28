@@ -39,7 +39,7 @@ fun SchedulerApp(
 
             LoginScreen(
                 modifier = modifier,
-                OnLoginClicked = {navActions.navigationToMain()},
+//                OnLoginClicked = {navActions.navigationToMain()},
                 OnRegidterClicked = {navActions.navigationToRegister()}
             )
 

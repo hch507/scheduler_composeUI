@@ -1,5 +1,6 @@
 package com.example.scheduler_composeui.ui.compose
 
+import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -24,6 +25,10 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.scheduler_composeui.ui.viewmodels.LoginViewmodel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.launch
 
 
 @Composable
@@ -43,8 +48,8 @@ fun TopSection(modifier: Modifier = Modifier) {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LoginSection(modifier: Modifier = Modifier,
-//                 viewmodel: LoginViewmodel = viewModel(),
-                 onClick: () -> Unit){
+                 viewmodel: LoginViewmodel
+                 ){
     Column(
         modifier= modifier.padding(50.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -68,10 +73,12 @@ fun LoginSection(modifier: Modifier = Modifier,
         )
         Spacer(modifier.height(25.dp))
         Button(
-            onClick = onClick
-//            {
-//                viewmodel.Message(id,pw)
-//            },
+            onClick = {
+                Log.d("hch", " - LoginSection() - called")
+                viewmodel.loginRequest(userId = id, userPw = pw)
+
+            }
+
         ) {
             Text(text = "로그인")
         }
@@ -94,13 +101,12 @@ fun RegisterSecton(modifier: Modifier = Modifier ,onClick : () ->Unit){
 @Composable
 fun LoginScreen(modifier: Modifier,
                 OnRegidterClicked : () -> Unit,
-                OnLoginClicked : () ->Unit,
                 viewmodel: LoginViewmodel =hiltViewModel()
                 ){
 
     Column(modifier = modifier.fillMaxSize()) {
         TopSection(modifier)
-        LoginSection(modifier, OnLoginClicked)
+        LoginSection(modifier,viewmodel)
         Spacer(modifier = Modifier.padding(20.dp))
         RegisterSecton(modifier, OnRegidterClicked)
     }

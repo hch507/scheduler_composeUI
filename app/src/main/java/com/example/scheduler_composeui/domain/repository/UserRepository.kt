@@ -1,8 +1,10 @@
 package com.example.scheduler_composeui.domain.repository
 
+import com.example.scheduler_composeui.data.dto.LoginResponse
+
 interface UserRepository {
 
-    fun getLogin():String
+    suspend fun getLogin(id : String, pw: String):LoginResponse?
 
-    fun signInUser()
+    suspend fun signInUser()
 }
