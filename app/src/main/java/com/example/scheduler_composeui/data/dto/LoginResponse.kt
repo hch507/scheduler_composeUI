@@ -9,6 +9,8 @@ data class LoginResponse(
     val userID :String,
     @SerializedName("userPassword")
     val userPassword:String,
+    @SerializedName("userGender")
+    val userGender:String,
     @SerializedName("userName")
     val userName:String,
     @SerializedName("userGrade")
