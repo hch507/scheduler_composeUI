@@ -2,6 +2,7 @@ package com.example.scheduler_composeui.data.repositoryimpl
 
 import android.util.Log
 import com.example.scheduler_composeui.data.dto.LoginResponse
+import com.example.scheduler_composeui.data.dto.ValidateResponse
 import com.example.scheduler_composeui.data.retrofit.IRetrofit
 import com.example.scheduler_composeui.domain.repository.UserRepository
 import retrofit2.Response
@@ -15,8 +16,8 @@ class UserRepositoryImpl @Inject constructor(
         return ApiService.loginRequest(id,pw).body()
     }
 
-    override suspend fun signInUser() {
-        TODO("Not yet implemented")
+    override suspend fun getValidUserId(id: String): ValidateResponse? {
+        return ApiService.validateRequest(id).body()
     }
 
 
