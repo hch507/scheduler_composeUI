@@ -3,7 +3,8 @@ package com.example.scheduler_composeui.ui.viewmodels
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.scheduler_composeui.domain.LoginUseCaee
+
+import com.example.scheduler_composeui.domain.LoginUserUseCaee
 import com.example.scheduler_composeui.domain.repository.UserRepository
 
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -25,7 +26,7 @@ data class LoginUiState(
 //ViewModel
 @HiltViewModel
 class LoginViewmodel @Inject constructor(
-    private val loginUseCase : LoginUseCaee
+    private val loginUserUseCase : LoginUserUseCaee
 ): ViewModel() {
     private val _uiState = MutableStateFlow(LoginUiState())
     val uiState =_uiState.asStateFlow()
@@ -39,7 +40,7 @@ class LoginViewmodel @Inject constructor(
         viewModelScope.launch{
 
             _uiState.value= LoginUiState(true,"hch","9809" )
-            loginUseCase(userId,userPw)
+            loginUserUseCase(userId,userPw)
             Log.d("hch", "Message: message 호출${uiState.value}")
 
 

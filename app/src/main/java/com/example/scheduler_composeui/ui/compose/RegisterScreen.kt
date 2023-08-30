@@ -31,6 +31,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.scheduler_composeui.ui.viewmodels.RegisterViewModel
 
 @Composable
@@ -47,7 +48,6 @@ fun registerScreen(
             modifier = modifier,
             viewmodel=viewmodel
             )
-        genderRadioButton(modifier=modifier)
     }
 
 }
@@ -66,16 +66,18 @@ fun registerHead(modifier: Modifier){
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun bodySection(
-        modifier: Modifier,
+        modifier:Modifier,
         viewmodel: RegisterViewModel
         ){
     var id by remember { mutableStateOf("") }
     var pw by remember { mutableStateOf("") }
     var name by remember { mutableStateOf("") }
+    var genderSelectValue by remember{ mutableStateOf("") }
+    var gradeSelectValue by remember { mutableStateOf("") }
     Column(
         modifier
-            .padding(10.dp),
-            horizontalAlignment = Alignment.CenterHorizontally) {
+            .padding(13.dp),
+        horizontalAlignment = Alignment.CenterHorizontally) {
         Row(modifier,
             Arrangement.SpaceEvenly){
             TextField(
@@ -84,7 +86,9 @@ fun bodySection(
                 label = { Text(text = "아이디")},
                 )
 
-            Button(onClick ={viewmodel.validUserId(id)}, shape= CircleShape) {
+            Button(
+                onClick ={viewmodel.validUserId(id)},
+                shape= CircleShape) {
                 Text(text = "중복")
             }
         }
@@ -96,17 +100,37 @@ fun bodySection(
             onValueChange ={name = it},
             label = { Text(text = "이름")},
         )
-        
+        selectRadioButton(
+            modifier = modifier,
+            item1 = "남자",
+            item2 = "여자",
+            isSelectedItem ={genderSelectValue ==it} ,
+            onChangeState = {genderSelectValue=it})
+        selectRadioButton(
+            modifier = modifier,
+            item1 = "직원",
+            item2 = "관리자" ,
+            isSelectedItem ={gradeSelectValue ==it} ,
+            onChangeState = {gradeSelectValue=it})
 
 
+        Button(onClick ={ viewmodel.registUser(userID = id, userPassword = pw, userGender = genderSelectValue, userGrade = gradeSelectValue, userName = name)}, shape= CircleShape) {
+            Text(text = "가입하기")
+        }
     }
 }
 @Composable
-fun genderRadioButton(modifier: Modifier){
+fun selectRadioButton(
+    modifier: Modifier,
+    item1 : String,
+    item2 : String,
+    isSelectedItem : (String) -> Boolean,
+    onChangeState : (String)-> Unit
+){
     val selectValue = remember{ mutableStateOf("") }
-    var isSelectedItem : (String) -> Boolean ={selectValue.value==it}
-    var onChangeState : (String)-> Unit ={selectValue.value=it }
-    val items = listOf("남자","여자")
+//    var isSelectedItem : (String) -> Boolean ={selectValue.value==it}
+//    var onChangeState : (String)-> Unit ={selectValue.value=it }
+    val items = listOf(item1,item2)
     Row(modifier.selectableGroup()
     ){
         items.forEach{item->
@@ -127,9 +151,9 @@ fun genderRadioButton(modifier: Modifier){
 
 
 }
-
-@Preview(showBackground = true)
-@Composable
-fun previewRegisterScreen(){
-    genderRadioButton(Modifier)
-}
+//
+//@Preview(showBackground = true)
+//@Composable
+//fun previewRegisterScreen(){
+//    genderRadioButton(Modifier)
+//}
