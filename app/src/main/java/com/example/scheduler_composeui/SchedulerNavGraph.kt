@@ -9,6 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -17,20 +18,23 @@ import com.example.scheduler_composeui.ui.compose.LoginScreen
 import com.example.scheduler_composeui.ui.compose.MainScreen
 import com.example.scheduler_composeui.ui.compose.registerScreen
 import com.example.scheduler_composeui.ui.compose.summaryScreen
+import com.example.scheduler_composeui.ui.viewmodels.UserViewModel
 import com.example.scheduler_composeui.utils.AppModalDrawer
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SchedulerApp(
-                modifier:Modifier=Modifier,
-                navController: NavHostController = rememberNavController(),
-                coroutineScope:CoroutineScope= rememberCoroutineScope(),
-                drawerState : DrawerState = rememberDrawerState(initialValue = DrawerValue.Closed),
-                navActions: NavigationAction = remember(navController) {
+    modifier:Modifier=Modifier,
+    navController: NavHostController = rememberNavController(),
+    coroutineScope:CoroutineScope= rememberCoroutineScope(),
+    userViewModel : UserViewModel = hiltViewModel(),
+    drawerState : DrawerState = rememberDrawerState(initialValue = DrawerValue.Closed),
+    navActions: NavigationAction = remember(navController) {
                     NavigationAction(navController)
-                }
+                },
 ){
 
 
@@ -39,8 +43,10 @@ fun SchedulerApp(
 
             LoginScreen(
                 modifier = modifier,
-//                OnLoginClicked = {navActions.navigationToMain()},
-                OnRegidterClicked = {navActions.navigationToRegister()}
+                OnLoginCliked = {navActions.navigationToMain()},
+                OnRegidterClicked = {navActions.navigationToRegister() },
+                viewmodel = userViewModel
+
             )
 
         }

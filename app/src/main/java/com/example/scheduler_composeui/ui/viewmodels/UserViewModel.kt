@@ -5,14 +5,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 
 import com.example.scheduler_composeui.domain.LoginUserUseCaee
-import com.example.scheduler_composeui.domain.repository.UserRepository
 
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 
@@ -20,12 +17,12 @@ import javax.inject.Inject
 data class LoginUiState(
     val isSign : Boolean=false,
     val userId : String ="",
-    val userPw : String =""
+    val userPassword : String ="",
 )
 
 //ViewModel
 @HiltViewModel
-class LoginViewmodel @Inject constructor(
+class UserViewModel @Inject constructor(
     private val loginUserUseCase : LoginUserUseCaee
 ): ViewModel() {
     private val _uiState = MutableStateFlow(LoginUiState())
@@ -35,13 +32,13 @@ class LoginViewmodel @Inject constructor(
         _uiState.value=LoginUiState()
     }
 
-    fun loginRequest(userId: String,userPw: String ){
+    fun loginRequest(userId: String,userPassword: String ){
         Log.d("hch", "LoginViewmodel - () - called")
         viewModelScope.launch{
 
-            _uiState.value= LoginUiState(true,"hch","9809" )
-            loginUserUseCase(userId,userPw)
-            Log.d("hch", "Message: message 호출${uiState.value}")
+            _uiState.value=
+            loginUserUseCase(userId,userPassword)
+            Log.d("hch", "Message: message 호출${loginUserUseCase(userId,userPassword)}")
 
 
 

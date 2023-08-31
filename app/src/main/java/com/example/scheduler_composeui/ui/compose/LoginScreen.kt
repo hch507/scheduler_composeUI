@@ -14,6 +14,7 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -23,7 +24,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.example.scheduler_composeui.ui.viewmodels.LoginViewmodel
+import com.example.scheduler_composeui.ui.viewmodels.UserViewModel
+
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -48,8 +50,10 @@ fun TopSection(modifier: Modifier = Modifier) {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LoginSection(modifier: Modifier = Modifier,
-                 viewmodel: LoginViewmodel
+                 viewmodel: UserViewModel,
+                 OnLoginCliked: () -> Unit
                  ){
+    val uiState by viewmodel.uiState.collectAsState()
     Column(
         modifier= modifier.padding(50.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -75,8 +79,11 @@ fun LoginSection(modifier: Modifier = Modifier,
         Button(
             onClick = {
                 Log.d("hch", " - LoginSection() - called")
-                viewmodel.loginRequest(userId = id, userPw = pw)
-
+                viewmodel.loginRequest(userId = id, userPassword  = pw)
+                if(uiState.isSign){
+                    Log.d("hch", " - LoginSection() - called ${uiState.isSign}")
+                    OnLoginCliked
+                }
             }
 
         ) {
@@ -101,12 +108,13 @@ fun RegisterSecton(modifier: Modifier = Modifier ,onClick : () ->Unit){
 @Composable
 fun LoginScreen(modifier: Modifier,
                 OnRegidterClicked : () -> Unit,
-                viewmodel: LoginViewmodel =hiltViewModel()
+                viewmodel: UserViewModel,
+                OnLoginCliked : () -> Unit
                 ){
 
     Column(modifier = modifier.fillMaxSize()) {
         TopSection(modifier)
-        LoginSection(modifier,viewmodel)
+        LoginSection(modifier,viewmodel,OnLoginCliked)
         Spacer(modifier = Modifier.padding(20.dp))
         RegisterSecton(modifier, OnRegidterClicked)
     }
