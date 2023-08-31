@@ -20,6 +20,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -69,6 +70,7 @@ fun bodySection(
         modifier:Modifier,
         viewmodel: RegisterViewModel
         ){
+    val validationId by viewmodel.validationState.collectAsState()
     var id by remember { mutableStateOf("") }
     var pw by remember { mutableStateOf("") }
     var name by remember { mutableStateOf("") }

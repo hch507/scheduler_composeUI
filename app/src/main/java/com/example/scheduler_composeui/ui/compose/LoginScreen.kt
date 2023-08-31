@@ -53,7 +53,7 @@ fun LoginSection(modifier: Modifier = Modifier,
                  viewmodel: UserViewModel,
                  OnLoginCliked: () -> Unit
                  ){
-    val uiState by viewmodel.uiState.collectAsState()
+    val userInfoState by viewmodel.userInfoState.collectAsState()
     Column(
         modifier= modifier.padding(50.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -80,9 +80,9 @@ fun LoginSection(modifier: Modifier = Modifier,
             onClick = {
                 Log.d("hch", " - LoginSection() - called")
                 viewmodel.loginRequest(userId = id, userPassword  = pw)
-                if(uiState.isSign){
-                    Log.d("hch", " - LoginSection() - called ${uiState.isSign}")
-                    OnLoginCliked
+                if(userInfoState.success){
+                    Log.d("hch", " - LoginSection() - called ${userInfoState.success}")
+                    OnLoginCliked()
                 }
             }
 

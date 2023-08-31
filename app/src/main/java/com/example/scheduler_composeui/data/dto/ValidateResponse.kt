@@ -6,6 +6,6 @@ data class ValidateResponse(
     @SerializedName("success")
     val success : Boolean,
 
-    @SerializedName("userID")
-    val userID : String
+    @SerializedName("message")
+    val message : String
 )
