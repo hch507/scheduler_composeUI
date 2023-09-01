@@ -26,4 +26,7 @@ class NavigationAction(val navController: NavHostController){
         navController.navigate(SchedulerScreen.Summary.title)
         Log.d("hch", "NavigationAction-navigationToSummary() called")
     }
+    fun navigationToLogin(){
+        navController.navigate(SchedulerScreen.LOGIN.title)
+    }
 }

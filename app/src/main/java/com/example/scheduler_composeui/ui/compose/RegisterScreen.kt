@@ -34,11 +34,13 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.scheduler_composeui.ui.viewmodels.RegisterViewModel
+import com.example.scheduler_composeui.ui.viewmodels.ScheduleViemodel
 
 @Composable
 fun registerScreen(
     modifier: Modifier=Modifier.fillMaxWidth(),
-    viewmodel : RegisterViewModel = hiltViewModel()
+    viewmodel : RegisterViewModel = hiltViewModel(),
+    OnRegisterClicked : () -> Unit
 ){
     Column(
         modifier,
@@ -47,7 +49,8 @@ fun registerScreen(
         registerHead(modifier = modifier)
         bodySection(
             modifier = modifier,
-            viewmodel=viewmodel
+            viewmodel=viewmodel,
+             onClicked = OnRegisterClicked
             )
     }
 
@@ -68,7 +71,8 @@ fun registerHead(modifier: Modifier){
 @Composable
 fun bodySection(
         modifier:Modifier,
-        viewmodel: RegisterViewModel
+        viewmodel: RegisterViewModel,
+        onClicked : ()->Unit
         ){
     val validationId by viewmodel.validationState.collectAsState()
     var id by remember { mutableStateOf("") }
@@ -86,7 +90,8 @@ fun bodySection(
                 value =id,
                 onValueChange ={id = it},
                 label = { Text(text = "아이디")},
-                )
+                enabled = !validationId.success
+            )
 
             Button(
                 onClick ={viewmodel.validUserId(id)},
@@ -116,9 +121,15 @@ fun bodySection(
             onChangeState = {gradeSelectValue=it})
 
 
-        Button(onClick ={ viewmodel.registUser(userID = id, userPassword = pw, userGender = genderSelectValue, userGrade = gradeSelectValue, userName = name)}, shape= CircleShape) {
+        Button(onClick ={
+            viewmodel.registUser(userID = id, userPassword = pw, userGender = genderSelectValue, userGrade = gradeSelectValue, userName = name)
+            onClicked()
+                        }, shape= CircleShape) {
             Text(text = "가입하기")
         }
+//        Button(onClick ={ testViewmMdel.getSchedule()}, shape= CircleShape) {
+//            Text(text = "가입하기")
+//        }
     }
 }
 @Composable

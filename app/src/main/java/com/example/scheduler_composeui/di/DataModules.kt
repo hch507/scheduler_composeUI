@@ -1,6 +1,8 @@
 package com.example.scheduler_composeui.di
 
+import com.example.scheduler_composeui.data.repositoryimpl.ScheduleRepositoryImpl
 import com.example.scheduler_composeui.data.repositoryimpl.UserRepositoryImpl
+import com.example.scheduler_composeui.domain.repository.ScheduleRepository
 import com.example.scheduler_composeui.domain.repository.UserRepository
 import dagger.Binds
 import dagger.Module
@@ -15,5 +17,6 @@ abstract class RepositoryModule{
 
     @Binds
     abstract fun bindUserRepository (userRepositoryImpl: UserRepositoryImpl):UserRepository
-
+    @Binds
+    abstract fun bindScheduleRepository(scheduleRepositoryImpl: ScheduleRepositoryImpl): ScheduleRepository
 }

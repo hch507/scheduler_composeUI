@@ -30,20 +30,20 @@ fun summaryScreen(
         contentPadding = PaddingValues(16.dp, 8.dp)
     ){
         items(uiState){it->
-            scheduleCard(it)
+            scheduleItem(it)
         }
     }
 }
 
 @Composable
-fun scheduleCard(
+fun scheduleItem(
     schedule: scheduleUiState
 ){
-    Card(){
+
         Column() {
-            Text(text = "날짜 : ${schedule.date}", fontSize = 10.sp)
+            Text(text = "날짜 : ${schedule.date}", fontSize = 30.sp)
             Text(text = "시작 : ${schedule.startTime}")
             Text(text = "종료 : ${schedule.endTime}")
         }
-    }
+
 }

@@ -18,6 +18,7 @@ import com.example.scheduler_composeui.ui.compose.LoginScreen
 import com.example.scheduler_composeui.ui.compose.MainScreen
 import com.example.scheduler_composeui.ui.compose.registerScreen
 import com.example.scheduler_composeui.ui.compose.summaryScreen
+import com.example.scheduler_composeui.ui.viewmodels.ScheduleViemodel
 import com.example.scheduler_composeui.ui.viewmodels.UserViewModel
 import com.example.scheduler_composeui.utils.AppModalDrawer
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -31,6 +32,7 @@ fun SchedulerApp(
     navController: NavHostController = rememberNavController(),
     coroutineScope:CoroutineScope= rememberCoroutineScope(),
     userViewModel : UserViewModel = hiltViewModel(),
+    scheduleViemodel: ScheduleViemodel = hiltViewModel(),
     drawerState : DrawerState = rememberDrawerState(initialValue = DrawerValue.Closed),
     navActions: NavigationAction = remember(navController) {
                     NavigationAction(navController)
@@ -52,7 +54,7 @@ fun SchedulerApp(
         }
         composable(route = SchedulerScreen.REGISTER.title){
 
-            registerScreen(modifier=modifier)
+            registerScreen(modifier=modifier , OnRegisterClicked = {navActions.navigationToLogin()} )
         }
         composable(route= SchedulerScreen.Main.title){
             AppModalDrawer(drawerState = drawerState,navActions) {

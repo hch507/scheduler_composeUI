@@ -14,4 +14,5 @@ object API{
     const val registerPhp : String ="UserRegister.php"
     const val loginPhp : String ="UserLogin.php"
     const val validatePhp : String="UserValidate.php"
+    const val loadSchedulePhp : String ="scheduleload.php"
 }
