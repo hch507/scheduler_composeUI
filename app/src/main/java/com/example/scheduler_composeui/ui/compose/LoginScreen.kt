@@ -1,6 +1,7 @@
 package com.example.scheduler_composeui.ui.compose
 
 import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -21,6 +22,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -53,7 +55,9 @@ fun LoginSection(modifier: Modifier = Modifier,
                  viewmodel: UserViewModel,
                  OnLoginCliked: () -> Unit
                  ){
+    val context = LocalContext.current
     val userInfoState by viewmodel.userInfoState.collectAsState()
+   
     Column(
         modifier= modifier.padding(50.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -62,6 +66,7 @@ fun LoginSection(modifier: Modifier = Modifier,
         //구성 가능한 함수는 remember API를 사용하여 메모리에 객체를 저장할 수 있습니다. remember에 의해 계산된 값은 초기
         // 컴포지션 중에 컴포지션에 저장되고 저장된 값은 리컴포지션 중에 반환됩니다.
         // remember는 변경 가능한 객체뿐만 아니라 변경할 수 없는 객체를 저장하는 데 사용할 수 있습니다.
+        val context = LocalContext.current
         var id by remember { mutableStateOf("") }
         var pw by remember { mutableStateOf("") }
         OutlinedTextField(
@@ -79,11 +84,16 @@ fun LoginSection(modifier: Modifier = Modifier,
         Button(
             onClick = {
                 Log.d("hch", " - LoginSection() - called")
-                viewmodel.loginRequest(userId = id, userPassword  = pw)
-                if(userInfoState.success){
-                    Log.d("hch", " - LoginSection() - called ${userInfoState.success}")
-                    OnLoginCliked()
+                if (id.isEmpty() || pw.isEmpty()) {
+                    Log.d("hch", "Toast 메세뇆")
+                    Toast.makeText(context,"아이디와 비밀번호를 입력하세요",Toast.LENGTH_SHORT).show()
+                } else {
+                    viewmodel.loginRequest(userId = id, userPassword = pw)
+//                    if (userInfoState.success) {
+//                        OnLoginCliked()
+//                    }
                 }
+
             }
 
         ) {

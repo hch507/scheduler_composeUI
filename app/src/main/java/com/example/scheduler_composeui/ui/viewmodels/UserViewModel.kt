@@ -11,11 +11,11 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import java.io.IOException
 import javax.inject.Inject
 
 
 ///uiState
-
 
 //ViewModel
 @HiltViewModel
@@ -31,12 +31,12 @@ class UserViewModel @Inject constructor(
 
     fun loginRequest(userId: String,userPassword: String ){
         Log.d("hch", "LoginViewmodel - () - called")
-        val job =viewModelScope.launch{
 
+        var job =viewModelScope.launch{
             _userInfoState.value= loginUserUseCase(userId,userPassword)!!
             Log.d("hch", "Message: message 호출")
-
         }
+
 
 
     }

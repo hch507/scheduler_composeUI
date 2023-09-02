@@ -25,7 +25,7 @@ class RegisterViewModel @Inject constructor(
     fun validUserId(id:String){
         viewModelScope.launch {
             _validationState.value=validateUseCase(id)!!
-//            Log.d("hch", "RegisterViewModel-validUserId() called ${validateUseCase(id)}")
+
         }
     }
 

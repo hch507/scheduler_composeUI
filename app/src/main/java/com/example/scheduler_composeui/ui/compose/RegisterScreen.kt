@@ -1,6 +1,7 @@
 package com.example.scheduler_composeui.ui.compose
 
 import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -27,6 +28,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -42,6 +44,7 @@ fun registerScreen(
     viewmodel : RegisterViewModel = hiltViewModel(),
     OnRegisterClicked : () -> Unit
 ){
+
     Column(
         modifier,
         horizontalAlignment = Alignment.CenterHorizontally
@@ -80,6 +83,7 @@ fun bodySection(
     var name by remember { mutableStateOf("") }
     var genderSelectValue by remember{ mutableStateOf("") }
     var gradeSelectValue by remember { mutableStateOf("") }
+    val context = LocalContext.current
     Column(
         modifier
             .padding(13.dp),
@@ -94,8 +98,10 @@ fun bodySection(
             )
 
             Button(
-                onClick ={viewmodel.validUserId(id)},
-                shape= CircleShape) {
+                onClick ={
+                    viewmodel.validUserId(id) },
+                shape= CircleShape,
+                enabled = !validationId.success) {
                 Text(text = "중복")
             }
         }
@@ -122,9 +128,16 @@ fun bodySection(
 
 
         Button(onClick ={
-            viewmodel.registUser(userID = id, userPassword = pw, userGender = genderSelectValue, userGrade = gradeSelectValue, userName = name)
-            onClicked()
-                        }, shape= CircleShape) {
+            if(validationId.success){
+                if (pw.isEmpty()|| name.isEmpty() || genderSelectValue.isEmpty()||gradeSelectValue.isEmpty()){
+                    Toast.makeText(context,"공백 없이 채워주세요",Toast.LENGTH_SHORT).show()
+                }else{
+                    viewmodel.registUser(userID = id, userPassword = pw, userGender = genderSelectValue, userGrade = gradeSelectValue, userName = name)
+                    onClicked()
+                }
+            }else{
+                Toast.makeText(context,"먼저 아이디 중복 검사를 해주세요 ",Toast.LENGTH_SHORT).show()
+            }}, shape= CircleShape) {
             Text(text = "가입하기")
         }
 //        Button(onClick ={ testViewmMdel.getSchedule()}, shape= CircleShape) {
