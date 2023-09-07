@@ -8,6 +8,7 @@ import com.example.scheduler_composeui.domain.LoginUserUseCaee
 import com.example.scheduler_composeui.domain.entity.UserInfo
 
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
@@ -32,9 +33,11 @@ class UserViewModel @Inject constructor(
     fun loginRequest(userId: String,userPassword: String ){
         Log.d("hch", "LoginViewmodel - () - called")
 
-        var job =viewModelScope.launch{
-            _userInfoState.value= loginUserUseCase(userId,userPassword)!!
-            Log.d("hch", "Message: message 호출")
+        viewModelScope.launch{
+            val userInfo= async { loginUserUseCase(userId,userPassword)!! }
+            _userInfoState.value=userInfo.await()
+ //           _userInfoState.value= async { loginUserUseCase(userId,userPassword)!! }
+            Log.d("hch", "Message: message 호출${userInfo.await()}")
         }
 
 

@@ -4,8 +4,10 @@ import android.util.Log
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.scheduler_composeui.data.dto.RegistResponse
 import com.example.scheduler_composeui.domain.RegistUserUseCase
 import com.example.scheduler_composeui.domain.ValidateUseCase
+import com.example.scheduler_composeui.domain.entity.RegisterInfo
 import com.example.scheduler_composeui.domain.entity.ValidationInfo
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -22,6 +24,8 @@ class RegisterViewModel @Inject constructor(
     private val _validationState = MutableStateFlow(ValidationInfo())
     val validationState = _validationState.asStateFlow()
 
+    private val _registState = MutableStateFlow(RegisterInfo())
+    val registState = _registState.asStateFlow()
     fun validUserId(id:String){
         viewModelScope.launch {
             _validationState.value=validateUseCase(id)!!
@@ -31,7 +35,8 @@ class RegisterViewModel @Inject constructor(
 
     fun registUser(userID: String,userPassword:String,userGender: String,userGrade: String,userName: String){
         viewModelScope.launch {
-            Log.d("hch", "RegisterViewModel - registUser() - called${registUserUseCase(userID,userPassword,userGender,userGrade,userName)}")
+            _registState.value=registUserUseCase(userID,userPassword,userGender,userGrade,userName)!!
+ //           Log.d("hch", "RegisterViewModel - registUser() - called${registUserUseCase(userID,userPassword,userGender,userGrade,userName)}")
         }
     }
 }

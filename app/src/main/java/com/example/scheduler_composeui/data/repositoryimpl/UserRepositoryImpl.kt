@@ -6,6 +6,7 @@ import com.example.scheduler_composeui.data.dto.RegistResponse
 import com.example.scheduler_composeui.data.dto.ValidateResponse
 import com.example.scheduler_composeui.data.mapper.UserMapper
 import com.example.scheduler_composeui.data.retrofit.IRetrofit
+import com.example.scheduler_composeui.domain.entity.RegisterInfo
 import com.example.scheduler_composeui.domain.entity.UserInfo
 import com.example.scheduler_composeui.domain.entity.ValidationInfo
 import com.example.scheduler_composeui.domain.repository.UserRepository
@@ -26,8 +27,9 @@ class UserRepositoryImpl @Inject constructor(
             ?.let { UserMapper.mapperToValidation(it) }
     }
 
-    override suspend fun getRegistMessage(userID:String,userPassword:String,userGender:String, userGrade:String,userName:String): RegistResponse? {
+    override suspend fun getRegistMessage(userID:String,userPassword:String,userGender:String, userGrade:String,userName:String): RegisterInfo? {
         return ApiService.registRequset(userID,userPassword,userGender,userGrade,userName).body()
+            ?.let { UserMapper.mapperToRegister(it) }
     }
 
 

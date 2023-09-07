@@ -15,6 +15,7 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -26,6 +27,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.scheduler_composeui.ui.viewmodels.UserViewModel
 
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -55,9 +57,13 @@ fun LoginSection(modifier: Modifier = Modifier,
                  viewmodel: UserViewModel,
                  OnLoginCliked: () -> Unit
                  ){
-    val context = LocalContext.current
-    val userInfoState by viewmodel.userInfoState.collectAsState()
-   
+
+    val userInfoState by viewmodel.userInfoState.collectAsStateWithLifecycle()
+    LaunchedEffect(key1 =userInfoState.success ){
+        if (userInfoState.success) {
+            OnLoginCliked()
+        }
+    }
     Column(
         modifier= modifier.padding(50.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -89,9 +95,6 @@ fun LoginSection(modifier: Modifier = Modifier,
                     Toast.makeText(context,"아이디와 비밀번호를 입력하세요",Toast.LENGTH_SHORT).show()
                 } else {
                     viewmodel.loginRequest(userId = id, userPassword = pw)
-//                    if (userInfoState.success) {
-//                        OnLoginCliked()
-//                    }
                 }
 
             }

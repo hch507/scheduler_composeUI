@@ -21,6 +21,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -34,6 +35,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.scheduler_composeui.ui.viewmodels.RegisterViewModel
 import com.example.scheduler_composeui.ui.viewmodels.ScheduleViemodel
@@ -77,13 +79,21 @@ fun bodySection(
         viewmodel: RegisterViewModel,
         onClicked : ()->Unit
         ){
-    val validationId by viewmodel.validationState.collectAsState()
+    val validationId by viewmodel.validationState.collectAsStateWithLifecycle()
+    val registerState by viewmodel.registState.collectAsStateWithLifecycle()
     var id by remember { mutableStateOf("") }
     var pw by remember { mutableStateOf("") }
     var name by remember { mutableStateOf("") }
     var genderSelectValue by remember{ mutableStateOf("") }
     var gradeSelectValue by remember { mutableStateOf("") }
+
     val context = LocalContext.current
+
+    LaunchedEffect(key1 =registerState.success ){
+        if (registerState.success) {
+            onClicked()
+        }
+    }
     Column(
         modifier
             .padding(13.dp),
@@ -133,7 +143,7 @@ fun bodySection(
                     Toast.makeText(context,"공백 없이 채워주세요",Toast.LENGTH_SHORT).show()
                 }else{
                     viewmodel.registUser(userID = id, userPassword = pw, userGender = genderSelectValue, userGrade = gradeSelectValue, userName = name)
-                    onClicked()
+
                 }
             }else{
                 Toast.makeText(context,"먼저 아이디 중복 검사를 해주세요 ",Toast.LENGTH_SHORT).show()
