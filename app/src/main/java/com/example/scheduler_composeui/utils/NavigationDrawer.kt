@@ -91,11 +91,6 @@ fun NavigationDrawer(
             label = "Home"
             )
         DrawerButton(
-            painter = painterResource(id = R.drawable.ic_baseline_app_registration_24),
-            action = { },
-            label = "캘린더"
-            )
-        DrawerButton(
             painter = painterResource(id = R.drawable.ic_baseline_article_24),
             action = {
                 naviToSummary()

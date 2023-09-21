@@ -32,7 +32,6 @@ fun SchedulerApp(
     navController: NavHostController = rememberNavController(),
     coroutineScope:CoroutineScope= rememberCoroutineScope(),
     userViewModel : UserViewModel = hiltViewModel(),
-    scheduleViemodel: ScheduleViemodel = hiltViewModel(),
     drawerState : DrawerState = rememberDrawerState(initialValue = DrawerValue.Closed),
     navActions: NavigationAction = remember(navController) {
                     NavigationAction(navController)
@@ -54,7 +53,9 @@ fun SchedulerApp(
         }
         composable(route = SchedulerScreen.REGISTER.title){
 
-            registerScreen(modifier=modifier , OnRegisterClicked = {navActions.navigationToLogin()} )
+            registerScreen(
+                modifier=modifier ,
+                OnRegisterClicked = {navActions.navigationToLogin()} )
         }
         composable(route= SchedulerScreen.Main.title){
             AppModalDrawer(drawerState = drawerState,navActions) {
@@ -66,7 +67,7 @@ fun SchedulerApp(
         }
         composable(route = SchedulerScreen.Summary.title){
             AppModalDrawer(drawerState = drawerState,navActions) {
-                summaryScreen(openDrawer = {
+                summaryScreen(modifier=modifier,openDrawer = {
                     Log.d("hch", "-SchedulerApp() called ")
                     coroutineScope.launch { drawerState.open() }
                 })
