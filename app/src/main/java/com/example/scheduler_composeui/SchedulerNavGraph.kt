@@ -28,46 +28,40 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SchedulerApp(
-    modifier:Modifier=Modifier,
+    modifier: Modifier = Modifier,
     navController: NavHostController = rememberNavController(),
-    coroutineScope:CoroutineScope= rememberCoroutineScope(),
-    userViewModel : UserViewModel = hiltViewModel(),
-    drawerState : DrawerState = rememberDrawerState(initialValue = DrawerValue.Closed),
+    coroutineScope: CoroutineScope = rememberCoroutineScope(),
+    userViewModel: UserViewModel = hiltViewModel(),
+    drawerState: DrawerState = rememberDrawerState(initialValue = DrawerValue.Closed),
     navActions: NavigationAction = remember(navController) {
-                    NavigationAction(navController)
-                },
-){
+        NavigationAction(navController)
+    },
+) {
 
-
-    NavHost(navController = navController, startDestination =SchedulerScreen.LOGIN.title  ){
-        composable(route = SchedulerScreen.LOGIN.title ){
-
+    NavHost(navController = navController, startDestination = SchedulerScreen.LOGIN.title) {
+        composable(route = SchedulerScreen.LOGIN.title) {
             LoginScreen(
                 modifier = modifier,
-                OnLoginCliked = {navActions.navigationToMain()},
-                OnRegidterClicked = {navActions.navigationToRegister() },
+                OnLoginCliked = { navActions.navigationToMain() },
+                OnRegidterClicked = { navActions.navigationToRegister() },
                 viewmodel = userViewModel
-
             )
-
         }
-        composable(route = SchedulerScreen.REGISTER.title){
+        composable(route = SchedulerScreen.REGISTER.title) {
 
             registerScreen(
-                modifier=modifier ,
-                OnRegisterClicked = {navActions.navigationToLogin()} )
+                OnRegisterClicked = { navActions.navigationToLogin() })
         }
-        composable(route= SchedulerScreen.Main.title){
-            AppModalDrawer(drawerState = drawerState,navActions) {
-                MainScreen(modifier=modifier, openDrawer = {
-                     coroutineScope.launch { drawerState.open() }
+        composable(route = SchedulerScreen.Main.title) {
+            AppModalDrawer(drawerState = drawerState, navActions) {
+                MainScreen(modifier = modifier, openDrawer = {
+                    coroutineScope.launch { drawerState.open() }
                 })
+            }
         }
-
-        }
-        composable(route = SchedulerScreen.Summary.title){
-            AppModalDrawer(drawerState = drawerState,navActions) {
-                summaryScreen(modifier=modifier,openDrawer = {
+        composable(route = SchedulerScreen.Summary.title) {
+            AppModalDrawer(drawerState = drawerState, navActions) {
+                summaryScreen(modifier = modifier, openDrawer = {
                     Log.d("hch", "-SchedulerApp() called ")
                     coroutineScope.launch { drawerState.open() }
                 })

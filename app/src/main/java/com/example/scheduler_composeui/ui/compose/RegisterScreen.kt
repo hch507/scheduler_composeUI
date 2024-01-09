@@ -5,10 +5,13 @@ import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.selection.selectableGroup
 import androidx.compose.foundation.shape.CircleShape
@@ -39,115 +42,139 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.scheduler_composeui.ui.viewmodels.RegisterViewModel
 import com.example.scheduler_composeui.ui.viewmodels.ScheduleViemodel
+import org.intellij.lang.annotations.JdkConstants.HorizontalAlignment
 
 @Composable
 fun registerScreen(
-    modifier: Modifier=Modifier.fillMaxWidth(),
-    viewmodel : RegisterViewModel = hiltViewModel(),
-    OnRegisterClicked : () -> Unit
-){
+    viewmodel: RegisterViewModel = hiltViewModel(),
+    OnRegisterClicked: () -> Unit
+) {
 
     Column(
-        modifier,
+        modifier = Modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        registerHead(modifier = modifier)
+        registerHead()
         bodySection(
-            modifier = modifier,
-            viewmodel=viewmodel,
-             onClicked = OnRegisterClicked
-            )
+            viewmodel = viewmodel,
+            onClicked = OnRegisterClicked
+        )
     }
 
 }
 
 @Composable
-fun registerHead(modifier: Modifier){
-    Surface(color= MaterialTheme.colorScheme.primary) {
-        Column(modifier.height(35.dp),
+fun registerHead() {
+    Surface(color = MaterialTheme.colorScheme.primary) {
+        Column(
+            modifier = Modifier
+                .height(35.dp)
+                .fillMaxWidth(),
             verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally ) {
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
             Text(text = "회원가입", fontSize = 25.sp)
         }
     }
 
 }
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun bodySection(
-        modifier:Modifier,
-        viewmodel: RegisterViewModel,
-        onClicked : ()->Unit
-        ){
+    viewmodel: RegisterViewModel,
+    onClicked: () -> Unit
+) {
     val validationId by viewmodel.validationState.collectAsStateWithLifecycle()
     val registerState by viewmodel.registState.collectAsStateWithLifecycle()
     var id by remember { mutableStateOf("") }
     var pw by remember { mutableStateOf("") }
     var name by remember { mutableStateOf("") }
-    var genderSelectValue by remember{ mutableStateOf("") }
+    var genderSelectValue by remember { mutableStateOf("") }
     var gradeSelectValue by remember { mutableStateOf("") }
 
     val context = LocalContext.current
 
-    LaunchedEffect(key1 =registerState.success ){
+    LaunchedEffect(key1 = registerState.success) {
         if (registerState.success) {
             onClicked()
         }
     }
     Column(
-        modifier
-            .padding(13.dp),
-        horizontalAlignment = Alignment.CenterHorizontally) {
-        Row(modifier,
-            Arrangement.SpaceEvenly){
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(top = 20.dp, start = 10.dp, end = 10.dp),
+        horizontalAlignment = Alignment.Start,
+
+    ) {
+        Row(
+            horizontalArrangement = Arrangement.SpaceEvenly
+        ) {
+
             TextField(
-                value =id,
-                onValueChange ={id = it},
-                label = { Text(text = "아이디")},
+                value = id,
+                onValueChange = { id = it },
+                label = { Text(text = "아이디") },
                 enabled = !validationId.success
             )
-
+            Spacer(modifier = Modifier.width(16.dp))
             Button(
-                onClick ={
-                    viewmodel.validUserId(id) },
-                shape= CircleShape,
-                enabled = !validationId.success) {
+                onClick = {
+                    viewmodel.validUserId(id)
+                },
+                shape = CircleShape,
+                enabled = !validationId.success
+            ) {
                 Text(text = "중복")
             }
         }
-        OutlinedTextField(value = pw,
-                        onValueChange ={pw = it},
-                        label = { Text(text = "비밀번호")},)
-        TextField(
-            value =name,
-            onValueChange ={name = it},
-            label = { Text(text = "이름")},
+        Spacer(modifier = Modifier.height(20.dp))
+        OutlinedTextField(
+            value = pw,
+            onValueChange = { pw = it },
+            label = { Text(text = "비밀번호") },
         )
+        Spacer(modifier = Modifier.height(20.dp))
+        TextField(
+            value = name,
+            onValueChange = { name = it },
+            label = { Text(text = "이름") },
+        )
+        Spacer(modifier = Modifier.height(20.dp))
         selectRadioButton(
-            modifier = modifier,
+
             item1 = "남자",
             item2 = "여자",
-            isSelectedItem ={genderSelectValue ==it} ,
-            onChangeState = {genderSelectValue=it})
+            isSelectedItem = { genderSelectValue == it },
+            onChangeState = { genderSelectValue = it })
+        Spacer(modifier = Modifier.height(20.dp))
         selectRadioButton(
-            modifier = modifier,
             item1 = "직원",
-            item2 = "관리자" ,
-            isSelectedItem ={gradeSelectValue ==it} ,
-            onChangeState = {gradeSelectValue=it})
+            item2 = "관리자",
+            isSelectedItem = { gradeSelectValue == it },
+            onChangeState = { gradeSelectValue = it })
 
-
-        Button(onClick ={
-            if(validationId.success){
-                if (pw.isEmpty()|| name.isEmpty() || genderSelectValue.isEmpty()||gradeSelectValue.isEmpty()){
-                    Toast.makeText(context,"공백 없이 채워주세요",Toast.LENGTH_SHORT).show()
-                }else{
-                    viewmodel.registUser(userID = id, userPassword = pw, userGender = genderSelectValue, userGrade = gradeSelectValue, userName = name)
+        Spacer(modifier = Modifier.height(40.dp))
+        Button(
+            modifier = Modifier.align(Alignment.CenterHorizontally),
+            onClick = {
+            if (validationId.success) {
+                if (pw.isEmpty() || name.isEmpty() || genderSelectValue.isEmpty() || gradeSelectValue.isEmpty()) {
+                    Toast.makeText(context, "공백 없이 채워주세요", Toast.LENGTH_SHORT).show()
+                } else {
+                    viewmodel.registUser(
+                        userID = id,
+                        userPassword = pw,
+                        userGender = genderSelectValue,
+                        userGrade = gradeSelectValue,
+                        userName = name
+                    )
 
                 }
-            }else{
-                Toast.makeText(context,"먼저 아이디 중복 검사를 해주세요 ",Toast.LENGTH_SHORT).show()
-            }}, shape= CircleShape) {
+            } else {
+                Toast.makeText(context, "먼저 아이디 중복 검사를 해주세요 ", Toast.LENGTH_SHORT).show()
+            }
+        }, shape = CircleShape) {
             Text(text = "가입하기")
         }
 //        Button(onClick ={ testViewmMdel.getSchedule()}, shape= CircleShape) {
@@ -155,31 +182,36 @@ fun bodySection(
 //        }
     }
 }
+
 @Composable
 fun selectRadioButton(
-    modifier: Modifier,
-    item1 : String,
-    item2 : String,
-    isSelectedItem : (String) -> Boolean,
-    onChangeState : (String)-> Unit
-){
-    val selectValue = remember{ mutableStateOf("") }
+    item1: String,
+    item2: String,
+    isSelectedItem: (String) -> Boolean,
+    onChangeState: (String) -> Unit
+) {
+    val selectValue = remember { mutableStateOf("") }
 //    var isSelectedItem : (String) -> Boolean ={selectValue.value==it}
 //    var onChangeState : (String)-> Unit ={selectValue.value=it }
-    val items = listOf(item1,item2)
-    Row(modifier.selectableGroup()
-    ){
-        items.forEach{item->
-            Row(modifier = Modifier
-                .selectable(
+    val items = listOf(item1, item2)
+    Row(
+        modifier = Modifier.selectableGroup()
+    ) {
+        items.forEach { item ->
+            Row(
+                modifier = Modifier
+                    .selectable(
+                        selected = isSelectedItem(item),
+                        onClick = { onChangeState(item) },
+                        role = Role.RadioButton
+                    )
+                    .padding(8.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                RadioButton(
                     selected = isSelectedItem(item),
-                    onClick = { onChangeState(item) },
-                    role = Role.RadioButton
+                    onClick = null
                 )
-                .padding(8.dp),
-                verticalAlignment = Alignment.CenterVertically) {
-                RadioButton(selected = isSelectedItem(item),
-                            onClick = null)
                 Text(text = item)
             }
         }
@@ -187,9 +219,11 @@ fun selectRadioButton(
 
 
 }
-//
-//@Preview(showBackground = true)
-//@Composable
-//fun previewRegisterScreen(){
-//    genderRadioButton(Modifier)
-//}
+
+@Preview(showBackground = true)
+@Composable
+fun previewRegisterScreen(){
+    registerScreen {
+        null
+    }
+}
